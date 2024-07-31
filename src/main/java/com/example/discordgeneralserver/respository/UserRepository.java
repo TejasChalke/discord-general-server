@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<Users, Integer> {
     int countByUname(String uname);
     Users findFirstByEmail(String email);
+    Users findFirstByEmailAndPassword(String email, String password);
 }

@@ -3,25 +3,25 @@ package com.example.discordgeneralserver.service;
 import com.example.discordgeneralserver.dto.ActionResult;
 import com.example.discordgeneralserver.dto.User;
 import com.example.discordgeneralserver.model.Users;
-import com.example.discordgeneralserver.respository.UserRepository;
+import com.example.discordgeneralserver.respository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService {
+public class UsersService {
     @Autowired
-    private UserRepository userRepository;
+    private UsersRepository usersRepository;
 
     public ActionResult createUser(String email, String password, String uname, String image) {
         try {
-            Users existingUser = userRepository.findFirstByEmail(email);
+            Users existingUser = usersRepository.findFirstByEmail(email);
             if(existingUser != null) throw new Exception("Creation Error: User with email already exists");
 
-            int tag = userRepository.countByUname(uname);
+            int tag = usersRepository.countByUname(uname);
             if(tag == 9999) throw new Exception("Creation Error: User name cannot be used");
             else tag++;
 
-            userRepository.saveAndFlush(new Users(uname, tag, password, email, image));
+            usersRepository.saveAndFlush(new Users(uname, tag, password, email, image));
             return new ActionResult("success", "user created");
         } catch (Exception e) {
             String error = e.getMessage();
@@ -34,7 +34,7 @@ public class UserService {
 
     public User loginUser(String email, String password) {
         try {
-            Users existingUser = userRepository.findFirstByEmailAndPassword(email, password);
+            Users existingUser = usersRepository.findFirstByEmailAndPassword(email, password);
             if(existingUser == null) throw new Exception("Login Error: User not found");
 
             return new User(existingUser.getId(), existingUser.getTag(), existingUser.getUname(), existingUser.getEmail());

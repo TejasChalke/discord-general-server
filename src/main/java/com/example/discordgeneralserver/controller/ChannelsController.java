@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/channel")
@@ -17,6 +19,13 @@ public class ChannelsController {
         public String name;
         public String description;
         public String image;
+    }
+
+    static class ChannelsData {
+        final public String[] keys = new String[] {"id", "creator_id", "name"};
+        public List<Object> values;
+
+        public ChannelsData(List<Object> values) { this.values = values; }
     }
 
     @Autowired
@@ -43,7 +52,16 @@ public class ChannelsController {
             return new ResponseEntity<>(result, HttpStatus.CREATED);
         } else {
             if(result.getMessage().contains("Creation Error")) return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
-            else return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+            else return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/user/{userId}")
+    private ResponseEntity<ChannelsData> getUserChannels(@PathVariable Integer userId) {
+        List<Object> channels = channelsService.getChannelList(userId);
+        if(channels == null) return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        ChannelsData result = new ChannelsData(channels);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

@@ -6,6 +6,8 @@ import com.example.discordgeneralserver.respository.ChannelsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ChannelsService {
     @Autowired
@@ -24,6 +26,15 @@ public class ChannelsService {
 
             if(error.contains("Creation Error")) return new ActionResult("error", error);
             else return new ActionResult("error", "internal server error");
+        }
+    }
+
+    public List<Object> getChannelList(Integer userId) {
+        try {
+            return channelsRepository.findChannelsByUserId(userId);
+        } catch (Exception e) {
+            System.out.println("Error getting channels for the user: " + e.getMessage());
+            return null;
         }
     }
 }

@@ -40,6 +40,6 @@ public class UsersController {
         User user = usersService.loginUser(body.email, body.password);
 
         if(user.getError() == null) return new ResponseEntity<>(user, HttpStatus.OK);
-        else return new ResponseEntity<>(user, HttpStatus.NOT_FOUND);
+        else return new ResponseEntity<>(user, HttpStatus.UNAUTHORIZED);
     }
 }

@@ -35,24 +35,15 @@ public class ChannelsController {
 
     @PostMapping("/")
     private ResponseEntity<ActionResult> createChannel(@RequestBody CreateChannelData body) {
-        // add the channel
+        // add the channel and add creator as a member
         ActionResult result = channelsService.createChannel(body.creator_id, body.name, body.description, body.image);
-        if(result.getStatus().equals("error")) {
-            if(result.getMessage().contains("Creation Error")) return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
-            else return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        // if channel is created extract the id from the message
-        String channelId = result.getMessage().substring(result.getMessage().indexOf(";") + 2);
-        // add the creator as a member of the channel
-        result = membersService.addMember(body.creator_id, Integer.parseInt(channelId), "creator");
 
         if(result.getStatus().equals("success")) {
             result.setMessage("channel created and user added");
             return new ResponseEntity<>(result, HttpStatus.CREATED);
         } else {
             if(result.getMessage().contains("Creation Error")) return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
-            else return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            else return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

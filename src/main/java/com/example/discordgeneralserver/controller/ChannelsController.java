@@ -55,4 +55,13 @@ public class ChannelsController {
         ChannelsData result = new ChannelsData(channels);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @GetMapping("/search")
+    private ResponseEntity<ChannelsData> getSearchChannels(@RequestParam String name, @RequestParam(name = "id") Integer userId) {
+        List<Object> channels = channelsService.getChannelList(name, userId);
+        if(channels == null) return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        ChannelsData result = new ChannelsData(channels);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }

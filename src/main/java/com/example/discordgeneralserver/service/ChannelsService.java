@@ -42,4 +42,13 @@ public class ChannelsService {
             return null;
         }
     }
+
+    public List<Object> getChannelList(String name, Integer userId) {
+        try {
+            return channelsRepository.findChannelByNameAndUserId(userId, name);
+        } catch (Exception e) {
+            System.out.println("Error getting channels for the specified name and userId: " + e.getMessage());
+            return null;
+        }
+    }
 }

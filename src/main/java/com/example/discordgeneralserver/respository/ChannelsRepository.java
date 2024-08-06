@@ -19,4 +19,9 @@ public interface ChannelsRepository extends JpaRepository<Channels, Integer> {
             "    Where m.user_id = ?1" +
             ")", nativeQuery = true)
     List<Object> findChannelsByUserId(Integer userId);
+
+    @Query(value = "Select c.id, c.creator_id, c.name From channels As c " +
+            "Where c.creator_id <> ?1 " +
+            "And c.name Like Concat(?2, '%')", nativeQuery = true)
+    List<Object> findChannelByNameAndUserId(Integer userId, String name);
 }

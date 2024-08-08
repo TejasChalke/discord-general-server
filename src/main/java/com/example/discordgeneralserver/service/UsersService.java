@@ -7,6 +7,9 @@ import com.example.discordgeneralserver.respository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
+
 @Service
 public class UsersService {
     @Autowired
@@ -44,6 +47,15 @@ public class UsersService {
 
             if(error.contains("Login Error")) return new User(error);
             else return new User("Internal Server Error");
+        }
+    }
+
+    public List<Object> getUsersByChannelId(Integer channelId) {
+        try {
+            return usersRepository.findUsersByChannelId(channelId);
+        } catch (Exception e) {
+            System.out.println("Error getting users by channel id: " + e.getMessage());
+            return null;
         }
     }
 }

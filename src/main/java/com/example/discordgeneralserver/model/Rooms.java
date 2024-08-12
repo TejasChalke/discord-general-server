@@ -13,6 +13,7 @@ public class Rooms {
     private Integer channelId;
     @Id
     private String name;
+    @Id
     private String type;
 
     public Rooms() {}

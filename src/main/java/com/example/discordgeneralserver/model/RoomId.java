@@ -6,12 +6,14 @@ import java.util.Objects;
 public class RoomId implements Serializable {
     private Integer channelId;
     private String name;
+    private String type;
 
     public RoomId() {}
 
-    public RoomId(Integer channelId, String name) {
+    public RoomId(Integer channelId, String name, String type) {
         this.channelId = channelId;
         this.name = name;
+        this.type = type;
     }
 
     public Integer getChannelId() {
@@ -34,11 +36,19 @@ public class RoomId implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof RoomId roomId)) return false;
-        return Objects.equals(channelId, roomId.channelId) && Objects.equals(name, roomId.name);
+        return Objects.equals(channelId, roomId.channelId) && Objects.equals(name, roomId.name) && Objects.equals(type, roomId.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(channelId, name);
+        return Objects.hash(channelId, name, type);
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
